@@ -5,6 +5,7 @@ use std::str::FromStr;
 #[derive(Debug, PartialEq)]
 enum OperationType {
     JsonToShape,
+    ShapeToJson,
 }
 
 impl FromStr for OperationType {
@@ -13,6 +14,7 @@ impl FromStr for OperationType {
     fn from_str(input: &str) -> Result<OperationType, Self::Err> {
         match input {
             "jsontoshape" => Ok(OperationType::JsonToShape),
+            "shapetojson" => Ok(OperationType::ShapeToJson),
             _ => Err(()),
         }
     }
@@ -31,6 +33,20 @@ fn json_to_shape_process(contents: String) -> String {
         .replace("[", "vec[")
         .replace(&check_for_match, &format!(" => {}", double_quote_char))
         .replace(second_for_match, " => shape(");
+}
+
+/**
+ * converts hack shape to JSON
+ */
+fn shape_to_json_process(contents: String) -> String {
+    let double_quote_char = '"';
+    let check_for_match = format!(": {}", double_quote_char);
+    return contents
+        .replace("shape(", "{")
+        .replace(")", "}")
+        .replace("vec[", "[")
+        .replace(&format!(" => {}", double_quote_char), &check_for_match)
+        .replace("=> {", ": {");
 }
 
 fn main() {
@@ -60,6 +76,21 @@ fn main() {
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
                 let result = json_to_shape_process(contents);
+                fs::write(filepath.unwrap(), result).expect("Unable to write file.");
+            }
+        }
+        OperationType::ShapeToJson => {
+            if filepath == None {
+                // cargo run jsontoshape ./testing.json
+                let contents =
+                    fs::read_to_string(filename).expect("Something went wrong when reading file");
+                let result = shape_to_json_process(contents);
+                println!("{}", result);
+            } else {
+                // cargo run jsontoshape ./testing.json ./result.php
+                let contents =
+                    fs::read_to_string(filename).expect("Something went wrong when reading file");
+                let result = shape_to_json_process(contents);
                 fs::write(filepath.unwrap(), result).expect("Unable to write file.");
             }
         }
