@@ -49,10 +49,17 @@ fn shape_to_json_process(contents: String) -> String {
         .replace("=> {", ": {");
 }
 
+#[cfg(debug_assertions)]
+fn log_env_args() {
+    let args: Vec<String> = env::args().collect();
+    println!("Debug Enviroment Args: {:?}", args);
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    println!("{:?}", args);
+    log_env_args();
+
     let operation_type = OperationType::from_str(&args[1]).unwrap();
 
     let filename = &args[2];
@@ -66,13 +73,11 @@ fn main() {
     match operation_type {
         OperationType::JsonToShape => {
             if filepath == None {
-                // cargo run jsontoshape ./testing.json
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
                 let result = json_to_shape_process(contents);
                 println!("{}", result);
             } else {
-                // cargo run jsontoshape ./testing.json ./result.php
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
                 let result = json_to_shape_process(contents);
@@ -81,13 +86,11 @@ fn main() {
         }
         OperationType::ShapeToJson => {
             if filepath == None {
-                // cargo run jsontoshape ./testing.json
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
                 let result = shape_to_json_process(contents);
                 println!("{}", result);
             } else {
-                // cargo run jsontoshape ./testing.json ./result.php
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
                 let result = shape_to_json_process(contents);
