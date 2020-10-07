@@ -49,6 +49,9 @@ fn shape_to_json_process(contents: String) -> String {
         .replace("=> {", ": {");
 }
 
+/**
+ * Log Enviroment Arguments.
+ */
 #[cfg(debug_assertions)]
 fn log_env_args() {
     let args: Vec<String> = env::args().collect();
