@@ -33,3 +33,4 @@ but shapetojson, objtojson and objtoshape is in the works.
 - [x] shapetojson
 - [] objtojson
 - [] objtoshape
+- [] shell completions for core commands
