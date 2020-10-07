@@ -1,5 +1,5 @@
 [package]
-name = "chadism"
+name = "quickscript"
 version = "0.1.0"
 authors = ["Carlos Alba <soradev4@gmail.com>"]
 edition = "2018"
