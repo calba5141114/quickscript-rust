@@ -22,6 +22,6 @@ but shapetojson, objtojson and objtoshape is in the works.
 ## Todo List
 
 - [x] jsontoshape
-- [] shapetojson
+- [x] shapetojson
 - [] objtojson
 - [] objtoshape
