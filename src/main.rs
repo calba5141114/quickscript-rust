@@ -23,18 +23,6 @@ impl FromStr for OperationType {
 /**
  * converts json to hack shape
  */
-fn json_to_shape_process(contents: String) -> String {
-    let double_quote_char = '"';
-    let check_for_match = format!(": {}", double_quote_char);
-    let second_for_match = ": shape(";
-    return contents
-        .replace("{", "shape(")
-        .replace("}", ")")
-        .replace("[", "vec[")
-        .replace(&check_for_match, &format!(" => {}", double_quote_char))
-        .replace(second_for_match, " => shape(");
-}
-
 fn json_to_shape_process_new(contents: String) -> String {
     const DOUBLE_QUOTE: char = '"';
     let mut process_store: Vec<String> = Vec::new();
