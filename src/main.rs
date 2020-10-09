@@ -35,6 +35,30 @@ fn json_to_shape_process(contents: String) -> String {
         .replace(second_for_match, " => shape(");
 }
 
+fn json_to_shape_process_new(contents: String) -> String {
+    const DOUBLE_QUOTE: char = '"';
+    let mut process_store: Vec<String> = Vec::new();
+    let character_vec: Vec<char> = contents.chars().collect();
+
+    let check_for_match = format!(": {}", DOUBLE_QUOTE);
+    let second_for_match = ": shape(";
+
+    for node in character_vec {
+        match node {
+            '{' => process_store.push("shape(".to_string()),
+            '}' => process_store.push(")".to_string()),
+            '[' => process_store.push("vec[".to_string()),
+            _ => process_store.push(node.to_string()),
+        }
+    }
+
+    let process_store_str: String = process_store
+        .join("")
+        .replace(&check_for_match, &format!(" => {}", DOUBLE_QUOTE))
+        .replace(second_for_match, " => shape(");
+    return process_store_str;
+}
+
 /**
  * converts hack shape to JSON
  */
@@ -78,12 +102,12 @@ fn main() {
             if filepath == None {
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
-                let result = json_to_shape_process(contents);
+                let result = json_to_shape_process_new(contents);
                 println!("{}", result);
             } else {
                 let contents =
                     fs::read_to_string(filename).expect("Something went wrong when reading file");
-                let result = json_to_shape_process(contents);
+                let result = json_to_shape_process_new(contents);
                 fs::write(filepath.unwrap(), result).expect("Unable to write file.");
             }
         }
